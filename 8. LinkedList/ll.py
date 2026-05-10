@@ -137,6 +137,41 @@ class LinkedList:
             fast = fast.next
 
         prev.next = None
+
+
+
+    def Pallindrome(self):
+        if self.head is None or self.head.next is None:
+            return True
+        
+        slow = self.head
+        fast = self.head
+
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+
+
+        secondHalf = self.reverseList(slow)
+
+        copySecondHalf = secondHalf
+
+
+        firstHalf = self.head
+
+        while secondHalf:
+
+            if firstHalf.data != secondHalf.data:
+                return False
+            
+            firstHalf = firstHalf.next
+            secondHalf = secondHalf.next
+
+
+
+        self.reverseList(copySecondHalf)
+
+        return True
     
         
 
