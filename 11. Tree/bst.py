@@ -1,4 +1,5 @@
-class Node:
+
+class TreeNode:
     def __init__(self,data):
         self.data = data
         self.left = None
@@ -12,126 +13,75 @@ class BST:
 
 
     # insert
+
     def insert(self,root,value):
 
         if root is None:
-            return Node(value)
-        
+            return TreeNode(value)
+
         if value < root.data:
             root.left = self.insert(root.left, value)
-
         else:
             root.right = self.insert(root.right, value)
 
         return root
-    
+
 
     # search
+
     def search(self,root,key):
 
-         if root is None:
-             return "Not Found"
-         
-         if root.data == key:
-             return "Found"
-         
-         if key < root.data:
-             return self.search(root.left, key)
-
-         else:
-             return self.search(root.right, key)
-             
-
-    # count nodes
-    def countNodes(self,root):
-
-          if root is None:
-             return 0
-          
-          return self.countNodes(root.left) + self.countNodes(root.right) + 1
-
-      # count nodes
-    def sumNode(self,root):
-
-          if root is None:
-             return 0
-          
-          return root.data +  self.sumNode(root.left) + self.sumNode(root.right)
-
-
-    def height(self,root):
-
         if root is None:
-             return 0
-        
-        left = self.height(root.left)
-        right = self.height(root.right)
+            return "Not Found"
 
-        return 1 + max(left,right)
+        if root.data == key:
+            return "Found"
 
-    def countLeaf(self,root):
+        if key < root.data:
+            return self.search(root.left, key)
+        else:
+            return self.search(root.right, key)
+
+
+    # node , sum , height
+    def countNode(self,root):
+
         if root is None:
             return 0
-        
-        if root.left is None and root.right is None:
+
+
+        return  self.countNode(root.left)+ self.countNode(root.right) + 1
+    
+    # node , sum , height
+    def SumNode(self,root):
+
+        if root is None:
+            return 0
+
+
+        return  self.SumNode(root.left)+ self.SumNode(root.right) + root.data
+    # node , sum , height
+    def Height(self,root):
+
+        if root is None:
+            return 0
+
+
+        left = self.Height(root.left)
+        right = self.Height(root.right)
+
+        return 1 + max(left, right)
+
+    def leafNode(self,root):
+
+        if root is None:
+                    return 0
+
+        if self.root.left is None and self.root.right is None:
             return 1
-        
-        return self.countLeaf(root.left) + self.countLeaf(root.right)
-
-    def mirrorTree(self,root):
-        if root is None:
-             return 0
-        
-        root.left,root.right = root.right , root.left
-
-        self.mirrorTree(root.left)
-        self.mirrorTree(root.right)
 
 
-    def identicalTree(self,root1,root2):
-
-        if root1 is None and root2 is None:
-            return True
-        
-        if root1 is None or root2 is None:
-            return False
-        
-        return (
-            root1.data == root2.data 
-            and self.identicalTree(root1.left, root2.left)
-            and self.identicalTree(root1.right, root2.right)
-        )
-
-    def maxNode(self,root):
-
-        if root is None:
-             return float("-inf")
-        
-        left = self.maxNode(root.left)
-        right = self.maxNode(root.right)
-
-        return max(root.data,left,right)
-
-    def diameter(self,root):
-        if root is None:
-             return 0
-        
-        leftHeight = self.height(root.left)
-        rightHeight = self.height(root.right)
-
-        currDia = leftHeight + rightHeight + 1
-
-        leftdia = self.diameter(root.left)
-        rightdia = self.diameter(root.left)
-
-        return max(currDia , leftdia , rightdia)
-
-
-
-
-
-
-
+        return self.leafNode(root.left) + self.leafNode(root.right)
 
     def inorder(self,root):
         if root:
@@ -150,32 +100,81 @@ class BST:
             self.postOrder(root.left) # left 
             self.postOrder(root.right) # right 
             print(root.data, end=" ") # root
-            
+
+    def maxNode(self,root):
+        if root is None:
+            return float("-inf")
+
+        left = self.maxNode(root.left)       
+        right = self.maxNode(root.right)       
+
+    def mirrorTree(self,root):
+        if root is None:
+            return 0
+
+        root.left , root.right = root.right, root.left
+
+
+        self.mirrorTree(root.left)
+        self.mirrorTree(root.right)
+
+    def identicalTree(self,root1, root2):
+
+        if root1 is None and root2 is None:
+            return True
+
+        if root1 is None or root2 is None:
+            return False
+
+        return (
+            root1.data == root2.data
+            and self.identicalTree(root1.left , root2.left)
+            and self.identicalTree(root1.right , root2.right)
+        )
+
+    def diameter(self,root):
+        if root is None:
+            return 0
+
+        leftheight = self.Height(root.left)
+        rightheight = self.Height(root.right)
+
+        currDia = leftheight + rightheight + 1
+
+
+        leftdia = self.diameter(root.left)
+        rightdia = self.diameter(root.right)
+
+
+        return max(currDia, leftdia, rightdia)
+    
+    # Mirror, identical, max, diameter, zigzag
+
 
 
 tree = BST()
+
 
 # values = [34,54,66,56,22,88]
 
 # for i in values:
 #     tree.root = tree.insert(tree.root, i)
 
+# print(tree.search(tree.root,23))
+# print(tree.countNode(tree.root))
+# print(tree.SumNode(tree.root))
+# print(tree.leafNode(tree.root))
 
-# print("Search 22:", tree.search(tree.root,22))
 
-# print("Total Nodes:", tree.countNodes(tree.root))
+# print(tree.inorder(tree.root))
+# tree.mirrorTree(tree.root)
+# print(tree.inorder(tree.root))
 
-# tree.inorder(tree.root)
-# print()
-# tree.postOrder(tree.root)
-# print()
-# tree.preOrder(tree.root)
-# print()
 
-root = Node(1)
-root.left = Node(2)
-root.right = Node(3)
-root.left.left = Node(4)
-root.left.right = Node(5)
+root = TreeNode(1)
+root.left = TreeNode(2)
+root.right = TreeNode(3)
+root.left.left = TreeNode(4)
+root.left.right = TreeNode(5)
 
-print("Diameter : ", tree.diameter(root))
+print("diameter: ", tree.diameter(root))
